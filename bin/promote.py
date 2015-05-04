@@ -32,6 +32,12 @@ consoleHandler.setFormatter(consoleFormatter)
 logger.addHandler(fileHandler)
 logger.addHandler(consoleHandler)
 
+def readConf(confFile):
+	"""
+	reads the config file, which passes the full path
+	names for the source and destination files
+	"""
+
 def moveFile(src, dest, bak=".bak"):
 	"""
 	Moves a given file from one directory to another,
@@ -56,9 +62,6 @@ def moveFile(src, dest, bak=".bak"):
 		except IOError as errorMessage:
 			logger.error(errorMessage)
 			return False
-
-
-			
 		
 
 def checkGit(directory):
