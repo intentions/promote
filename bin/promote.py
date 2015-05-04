@@ -9,34 +9,51 @@ import logging
 import shutil
 import os
 
-logPath = '../log/'
+ConfigFile = ""
+LogFileName = "prompte.log"
 
-logFile = logPath + 'promote.log'
-
-logger = logging.getLogger(__name__)
-if debugFlag == True:
-	logger.setLevel(logging.DEBUG)
-else:
-	logger.setLevel(logging.INFO)
-
-fileHandler = logging.FileHandler(logFile)
-fileHandler.setLevel(logging.INFO)
-
-consoleHandler = logging.StreamHandler()
-consoleHandler.setLevel(logging.ERROR)
-
-consoleFormat = '%(levelname) - %(name)s: %(message)s'
-consoleFormatter = logging.Formatter(fmt=consoleFormat)
-consoleHandler.setFormatter(consoleFormatter)
-
-logger.addHandler(fileHandler)
-logger.addHandler(consoleHandler)
+#DebugFlag=True
 
 def readConf(confFile):
 	"""
 	reads the config file, which passes the full path
 	names for the source and destination files
 	"""
+
+def logConfigure(logFileName, debugFlag=False):
+	"""
+	experimental function to configure logging
+	"""
+
+	logPath = '../log/'
+
+	logFile = '{0}{1}'.format(logPath, logFileName)
+
+	logger = logging.getLogger(__name__)
+
+	if debugFlag == True:
+		logger.setLevel(logging.DEBUG)
+		message = "debugging enabled"
+	else:
+		logger.setLevel(logging.INFO)
+
+	fileHandler = logging.FileHandler(logFile)
+	fileHandler.setLevel(logging.INFO)
+
+	consoleHandler = logging.StreamHandler()
+	consoleHandler.setLevel(logging.ERROR)
+
+	consoleFormat = '%(levelname) - %(name)s: %(message)s'
+	consoleFormatter = logging.Formatter(fmt=consoleFormat)
+	consoleHandler.setFormatter(consoleFormatter)
+
+	logger.addHandler(fileHandler)
+	logger.addHandler(consoleHandler)
+
+	logger.debug(message)
+
+	return(logger)
+
 
 def moveFile(src, dest, bak=".bak"):
 	"""
@@ -75,3 +92,5 @@ if __name__ == "__main__":
 	"""
 	main function
 	"""
+
+	readConf
