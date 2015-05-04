@@ -5,22 +5,34 @@ Promotes files as directed in the config file
 
 #import modules
 import logging
+#for file copy
 import shutil
+
+logPath = '../log/'
+
+logFile = logPath + 'prompte.log'
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-filehandler = logging.FileHandler('../log/promote.log')
-filehandler.setLevel(logging.INFO)
+fileHandler = logging.FileHandler(logFile)
+fileHandler.setLevel(logging.INFO)
 
-consolehandler = logging.StreamHandler()
-consolehandler.setLevel(logging.ERROR)
+consoleHandler = logging.StreamHandler()
+consoleHandler.setLevel(logging.ERROR)
 
-formatter = logging.Formatter('%(asctime)s %(name)s - %(message)s'
+consoleFormat = '%(levelname) - %(name)s: %(message)s'
+consoleFormatter = logging.Formatter(fmt=consoleFormat)
+consoleHandler.setFormatter(consoleFormatter)
 
-def moveFile(src, dest):
+logger.addHandler(fileHandler)
+logger.addHandler(consoleHandler)
+
+def moveFile(src, dest, bak=".bak"):
 	"""
-	Moves a given file from one directory to another
+	Moves a given file from one directory to another,
+	if the target file exists in that directory then
+	the target is coppied as .bak
 	"""
 
 def checkGit(directory):
@@ -30,3 +42,7 @@ def checkGit(directory):
 	"""
 
 
+if __name__ == "__main__":
+	"""
+	main function
+	"""
