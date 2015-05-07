@@ -30,27 +30,24 @@ def logConfigure(logFileName, debugFlag=False):
 	logFile = '{0}{1}'.format(logPath, logFileName)
 
 	logger = logging.getLogger(__name__)
+	logger.setLevel(logging.DEBUG)
 
-	if debugFlag == True:
-		logger.setLevel(logging.DEBUG)
-		message = "debugging enabled"
-	else:
-		logger.setLevel(logging.INFO)
+	# create file handler which logs even debug messages
+	fh = logging.FileHandler(logFile)
+	fh.setLevel(logging.DEBUG)
 
-	fileHandler = logging.FileHandler(logFile)
-	fileHandler.setLevel(logging.INFO)
+	# create console handler with a higher log level
+	ch = logging.StreamHandler()
+	ch.setLevel(logging.INFO)
 
-	consoleHandler = logging.StreamHandler()
-	consoleHandler.setLevel(logging.ERROR)
+	# create formatter and add it to the handlers
+	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	ch.setFormatter(formatter)
+	fh.setFormatter(formatter)
 
-	consoleFormat = '%(levelname) - %(name)s: %(message)s'
-	consoleFormatter = logging.Formatter(fmt=consoleFormat)
-	consoleHandler.setFormatter(consoleFormatter)
-
-	logger.addHandler(fileHandler)
-	logger.addHandler(consoleHandler)
-
-	logger.debug(message)
+	# add the handlers to logger
+	logger.addHandler(ch)
+	logger.addHandler(fh)
 
 	return(logger)
 
@@ -93,4 +90,6 @@ if __name__ == "__main__":
 	main function
 	"""
 
-	readConf
+	logger = logConfigure(LogFileName)
+	logger.info("test1")
+	logger.warning("test2")	
