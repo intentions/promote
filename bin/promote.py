@@ -5,6 +5,7 @@ Promotes files as directed in the config file
 
 #import modules
 import logging
+import json
 #for file copy
 import shutil
 import os
