@@ -10,47 +10,61 @@ import json
 import shutil
 import os
 
-ConfigFile = ""
+ConfigFile = "promote.json"
 LogFileName = "prompte.log"
 
 #DebugFlag=True
 
 def readConf(confFile):
-	"""
-	reads the config file, which passes the full path
-	names for the source and destination files
-	"""
+    """
+    reads the config file, which passes the full path
+    names for the source and destination files
+    """
+    with open(confFile) as json_data_file:
+        confData = json.load(json_data_file)
+
+    print(confData)
+
+    return(confData)
+
+
+
 
 def logConfigure(logFileName, debugFlag=False):
-	"""
-	experimental function to configure logging
-	"""
+    """
+    experimental function to configure logging
+    """
+    logPath = '../log/'
 
-	logPath = '../log/'
+    logFile = '{0}{1}'.format(logPath, logFileName)
 
-	logFile = '{0}{1}'.format(logPath, logFileName)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
-	logger = logging.getLogger(__name__)
-	logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler(logFile)
+    fh.setLevel(logging.DEBUG)
 
-	# create file handler which logs even debug messages
-	fh = logging.FileHandler(logFile)
-	fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    #set logging level
+    if ( debugFlag):
+        fh.setLevel(logging.DEBUG)
+        ch.setLevel(logging.DEBUG)
+    else:
+        fh.setLevel(logging.INFO)
+    ch.setLevel(logging.INFO)            
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    fh.setFormatter(formatter)
 
-	# create console handler with a higher log level
-	ch = logging.StreamHandler()
-	ch.setLevel(logging.INFO)
+    # add the handlers to logger
+    logger.addHandler(ch)
+    logger.addHandler(fh)
 
-	# create formatter and add it to the handlers
-	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-	ch.setFormatter(formatter)
-	fh.setFormatter(formatter)
-
-	# add the handlers to logger
-	logger.addHandler(ch)
-	logger.addHandler(fh)
-
-	return(logger)
+    return(logger)
 
 
 def moveFile(src, dest, bak=".bak"):
@@ -87,10 +101,15 @@ def checkGit(directory):
 
 
 if __name__ == "__main__":
-	"""
-	main function
-	"""
+    """
+    main function
+    """
+    #read confing file
+    confData = readConf(ConfigFile)
+    print confData
 
-	logger = logConfigure(LogFileName)
-	logger.info("test1")
-	logger.warning("test2")	
+
+
+    
+
+

@@ -5,17 +5,16 @@
 			"file_2",
 			"file_3"
 			],
-		"source":"../source/"
+		"source":"../source/",
 		"destination":"../destination"
 		},
-	
-	:file_group_two":{
+	"file_group_two":{
 			"file_names":[
 			"file_a",
 			"file_b",
 			"file_c"
 			],
-		"source":"../source/"
+		"source":"../source/",
 		"destination":"../destination"
 		}
 }		
