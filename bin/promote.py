@@ -27,6 +27,11 @@ def readConf(confFile):
 
     return(confData)
 
+def parseConf(confData):
+    """
+    takes the config data and calls the moveFile function
+    """
+
 
 
 
@@ -106,7 +111,7 @@ if __name__ == "__main__":
     """
     #read confing file
     confData = readConf(ConfigFile)
-    print confData
+    parseConf(confData)
 
 
 
