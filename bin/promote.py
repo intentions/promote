@@ -9,6 +9,8 @@ import json
 #for file copy
 import shutil
 import os
+#import for file verification
+import hashlib
 
 ConfigFile = "promote.json"
 LogFileName = "prompte.log"
@@ -107,7 +109,18 @@ def checkGit(directory):
 	any pending commits and the script will exit
 	"""
 
-
+def verifyFile(source, destination)
+	"""
+	uses sha512 to verify that the soruce file and the destination file are the same
+	"""
+	sourceHash = hashlib.sha256(open(source, 'rb').read()).digest()
+	destinationHash = hashlib.sha256(open(destination, 'rb').read()).digest()
+	
+	if sourceHash == destinationHash:
+		return True
+	
+	return False
+	
 if __name__ == "__main__":
 	"""
 	main function
