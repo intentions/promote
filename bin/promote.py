@@ -9,11 +9,13 @@ import json
 #for file copy
 import shutil
 import os
+#import for file verification
+import hashlib
 
 ConfigFile = "promote.json"
 LogFileName = "prompte.log"
 
-#DebugFlag=True
+#debugFlag=True
 
 def readConf(confFile):
     """
@@ -23,16 +25,19 @@ def readConf(confFile):
     with open(confFile) as json_data_file:
         confData = json.load(json_data_file)
 
-    print(confData)
-
     return(confData)
 
 def parseConf(confData):
-    """
-    takes the config data and calls the moveFile function
-    """
-
-
+	"""
+	takes the config data and calls the moveFile function
+	"""
+	groupNames = confData.keys()
+	for group in groupNames:
+		logger.info("processing {0}".format(confData[group]["group_name"]))
+		logger.info("source: {0}".format(confData[group]["source"]))
+		logger.info("destination: {0}".format(confData[group]["destination"]))
+		for f in confData[group]["file_names"]:
+			logger.info("file name: {0}".format(f))
 
 
 def logConfigure(logFileName, debugFlag=False):
@@ -68,7 +73,7 @@ def logConfigure(logFileName, debugFlag=False):
     # add the handlers to logger
     logger.addHandler(ch)
     logger.addHandler(fh)
-
+	
     return(logger)
 
 
@@ -104,14 +109,27 @@ def checkGit(directory):
 	any pending commits and the script will exit
 	"""
 
-
+def verifyFile(source, destination)
+	"""
+	uses sha512 to verify that the soruce file and the destination file are the same
+	"""
+	sourceHash = hashlib.sha256(open(source, 'rb').read()).digest()
+	destinationHash = hashlib.sha256(open(destination, 'rb').read()).digest()
+	
+	if sourceHash == destinationHash:
+		return True
+	
+	return False
+	
 if __name__ == "__main__":
-    """
-    main function
-    """
-    #read confing file
-    confData = readConf(ConfigFile)
-    parseConf(confData)
+	"""
+	main function
+	"""
+	logger =  logConfigure(LogFileName)
+	
+	#read confing file
+	confData = readConf(ConfigFile)
+	parseConf(confData)
 
 
 

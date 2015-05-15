@@ -1,5 +1,5 @@
 {
-    "file_group": {
+    "file_group_1": {
         "group_name": "group_one",
         "file_names": [
             "file_1",
@@ -9,7 +9,7 @@
         "source": "../source/",
         "destination": "../destination"
     },
-    "file_group": {
+    "file_group_2": {
         "group_name": "group_two",
         "file_names": [
             "file_a",
