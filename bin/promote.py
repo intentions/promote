@@ -18,14 +18,14 @@ LogFileName = "prompte.log"
 #debugFlag=True
 
 def readConf(confFile):
-    """
-    reads the config file, which passes the full path
-    names for the source and destination files
-    """
-    with open(confFile) as json_data_file:
-        confData = json.load(json_data_file)
+	"""
+	reads the config file, which passes the full path
+	names for the source and destination files
+	"""
+	with open(confFile) as json_data_file:
+		confData = json.load(json_data_file)
 
-    return(confData)
+	return confData
 
 def parseConf(confData):
 	"""
@@ -41,40 +41,41 @@ def parseConf(confData):
 
 
 def logConfigure(logFileName, debugFlag=False):
-    """
-    experimental function to configure logging
-    """
-    logPath = '../log/'
+	"""
+	experimental function to configure logging
+	"""
+	logPath = '../log/'
 
-    logFile = '{0}{1}'.format(logPath, logFileName)
+	logFile = '{0}{1}'.format(logPath, logFileName)
 
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+	logger = logging.getLogger(__name__)
+	logger.setLevel(logging.DEBUG)
 
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler(logFile)
-    fh.setLevel(logging.DEBUG)
+	# create file handler which logs even debug messages
+	fh = logging.FileHandler(logFile)
+	fh.setLevel(logging.DEBUG)
 
-    # create console handler with a higher log level
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.INFO)
-    #set logging level
-    if ( debugFlag):
-        fh.setLevel(logging.DEBUG)
-        ch.setLevel(logging.DEBUG)
-    else:
-        fh.setLevel(logging.INFO)
-    ch.setLevel(logging.INFO)            
-    # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    ch.setFormatter(formatter)
-    fh.setFormatter(formatter)
+	# create console handler with a higher log level
+	ch = logging.StreamHandler()
+	ch.setLevel(logging.INFO)
+	#set logging level
+	if debugFlag:
+		fh.setLevel(logging.DEBUG)
+		ch.setLevel(logging.DEBUG)
+	else:
+		fh.setLevel(logging.INFO)
+		ch.setLevel(logging.INFO)
+	# create formatter and add it to the handlers
+	formatOptions = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+	formatter = logging.Formatter(formatOptions)
+	ch.setFormatter(formatter)
+	fh.setFormatter(formatter)
 
-    # add the handlers to logger
-    logger.addHandler(ch)
-    logger.addHandler(fh)
-	
-    return(logger)
+	# add the handlers to logger
+	logger.addHandler(ch)
+	logger.addHandler(fh)
+
+	return logger
 
 
 def moveFile(src, dest, bak=".bak"):
@@ -84,8 +85,8 @@ def moveFile(src, dest, bak=".bak"):
 	the target is coppied as .bak
 	"""
 
-	if ( os.path.exists(dest)):
-		message = "file {0} exists, appending with {1}".format(dest, bak) 
+	if os.path.exists(dest):
+		message = "file {0} exists, appending with {1}".format(dest, bak)
 		logger.info(message)
 		backupFileName = "{0}.{1}".format(dest, bak)
 		try:
@@ -94,14 +95,13 @@ def moveFile(src, dest, bak=".bak"):
 			logger.error(errorMessage)
 			return False
 
-	if ( os.path.exists(src)):
+	if os.path.exists(src):
 		message = "copying {0} to {1)".format(src, dest)
 		try:
 			shutil.copy(src, dest)
 		except IOError as errorMessage:
 			logger.error(errorMessage)
 			return False
-		
 
 def checkGit(directory):
 	"""
@@ -109,30 +109,25 @@ def checkGit(directory):
 	any pending commits and the script will exit
 	"""
 
-def verifyFile(source, destination)
+def verifyFile(source, destination):
 	"""
-	uses sha512 to verify that the soruce file and the destination file are the same
+	uses sha512 to verify that the soruce file and the destination file are
+	the same
 	"""
 	sourceHash = hashlib.sha256(open(source, 'rb').read()).digest()
 	destinationHash = hashlib.sha256(open(destination, 'rb').read()).digest()
-	
+
 	if sourceHash == destinationHash:
 		return True
-	
+
 	return False
-	
+
 if __name__ == "__main__":
 	"""
 	main function
 	"""
-	logger =  logConfigure(LogFileName)
-	
+	logger = logConfigure(LogFileName)
+
 	#read confing file
 	confData = readConf(ConfigFile)
 	parseConf(confData)
-
-
-
-    
-
-
