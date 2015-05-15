@@ -32,9 +32,14 @@ def parseConf(confData):
 	for group in groupNames:
 		logger.info("processing {0}".format(confData[group]["group_name"]))
 		logger.info("source: {0}".format(confData[group]["source"]))
+		sourcePath = confData[group]["source"]
 		logger.info("destination: {0}".format(confData[group]["destination"]))
+		destinationPath = confData[group]["destination"]
 		for f in confData[group]["file_names"]:
 			logger.info("file name: {0}".format(f))
+			fileSource = "{0}/{1}".format(sourcePath, f)
+			fileDestination = "{0}/{1}".format(destinationPath, f)
+			moveFile(fileSource, fileDestination)
 	return True
 
 def logConfigure(logFileName, debugFlag=False):
@@ -75,17 +80,19 @@ def logConfigure(logFileName, debugFlag=False):
 	return logger
 
 
-def moveFile(src, dest, bak=".bak"):
+def moveFile(src, dest, bak="bak"):
 	"""
 	Moves a given file from one directory to another,
 	if the target file exists in that directory then
 	the target is coppied as .bak
 	"""
-
+	message = "processing: {0} -> {1}".format(src, dest)
+	logger.info(message)
+	
 	if os.path.exists(dest):
-		message = "file {0} exists, appending with {1}".format(dest, bak)
-		logger.info(message)
 		backupFileName = "{0}.{1}".format(dest, bak)
+		message = "file {0} exists, creating backup: {1}".format(dest, backupFileName)
+		logger.info(message)
 		try:
 			shutil.move(dest, backupFileName)
 		except IOError as errorMessage:
@@ -93,13 +100,34 @@ def moveFile(src, dest, bak=".bak"):
 			return False
 
 	if os.path.exists(src):
-		message = "copying {0} to {1)".format(src, dest)
+		message = "copying {0} to {1})".format(src, dest)
 		try:
 			shutil.copy(src, dest)
 		except IOError as errorMessage:
 			logger.error(errorMessage)
 			return False
 
+	#verify that files are the same
+	(fileCheck, fileSig) = verifyFile(src, dest)
+	if fileCheck:
+		message = "File transfer verified {0} -> {1}".format(src, dest)
+		logger.info(message)
+		message = "File Signature for {0}: {1}".format(src, fileSig)
+		logger.info(message)
+		return True
+	else:
+		message = "file signatures do not match, rolling back {0} -> {1}".format(backupFileName, dest)
+		logger.error(message)
+	
+	#roll back file
+	try:
+		shutil.move(backupFileName, dest)
+	except IOError as errorMessage:
+		logger.error(errorMessage)
+		return False
+	
+
+	
 def checkGit(directory):
 	"""
 	checks to see if there are any pending git commits
@@ -115,7 +143,7 @@ def verifyFile(source, destination):
 	destinationHash = hashlib.sha256(open(destination, 'rb').read()).digest()
 
 	if sourceHash == destinationHash:
-		return True
+		return (True, str(sourceHash))
 
 	return False
 

@@ -6,7 +6,7 @@
             "file_2",
             "file_3"
         ],
-        "source": "../source/",
+        "source": "../source",
         "destination": "../destination"
     },
     "file_group_2": {
@@ -16,7 +16,7 @@
             "file_b",
             "file_c"
         ],
-        "source": "../source/",
+        "source": "../source",
         "destination": "../destination"
     }
 }
