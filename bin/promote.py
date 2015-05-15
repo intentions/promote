@@ -12,9 +12,6 @@ import os
 #import for file verification
 import hashlib
 
-ConfigFile = "promote.json"
-LogFileName = "prompte.log"
-
 #debugFlag=True
 
 def readConf(confFile):
@@ -23,9 +20,9 @@ def readConf(confFile):
 	names for the source and destination files
 	"""
 	with open(confFile) as json_data_file:
-		confData = json.load(json_data_file)
+		configData = json.load(json_data_file)
 
-	return confData
+	return configData
 
 def parseConf(confData):
 	"""
@@ -38,7 +35,7 @@ def parseConf(confData):
 		logger.info("destination: {0}".format(confData[group]["destination"]))
 		for f in confData[group]["file_names"]:
 			logger.info("file name: {0}".format(f))
-
+	return True
 
 def logConfigure(logFileName, debugFlag=False):
 	"""
@@ -126,6 +123,9 @@ if __name__ == "__main__":
 	"""
 	main function
 	"""
+	ConfigFile = "promote.json"
+	LogFileName = "prompte.log"
+
 	logger = logConfigure(LogFileName)
 
 	#read confing file
