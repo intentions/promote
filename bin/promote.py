@@ -147,6 +147,27 @@ def verifyFile(source, destination):
 
 	return False
 
+def test_promote():
+	"""
+	Testing funciton for nose
+	"""
+	message = "starting test of promote.py"
+	logger.info(message)
+	testConfigFile = "test.json"
+	message = "testing existence of test config file {0}".format(testConfigFile)
+	logger.info(message)
+	try os.path.isfile(testConfigFile) as ok:
+		message = "test config file {0} exists? {1}".format(testConfigFile, str(ok))
+		assert configFile_Exists = True
+	else IOError as errorMessage:
+		errorMessage = "checking existence of {0}, received {1}".format(testConfigFile, errorMessage)
+		logger.error(errorMessage)
+		assert configFile_Exists = False
+		
+	return True
+	
+
+	
 if __name__ == "__main__":
 	"""
 	main function
