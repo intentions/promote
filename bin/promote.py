@@ -151,18 +151,22 @@ def test_promote():
 	"""
 	Testing funciton for nose
 	"""
+
+	logger = logConfigure("promote_test.log")
+	
 	message = "starting test of promote.py"
 	logger.info(message)
 	testConfigFile = "test.json"
 	message = "testing existence of test config file {0}".format(testConfigFile)
 	logger.info(message)
-	try os.path.isfile(testConfigFile) as ok:
-		message = "test config file {0} exists? {1}".format(testConfigFile, str(ok))
-		assert configFile_Exists = True
-	else IOError as errorMessage:
+	try:
+		os.path.isfile(testConfigFile)
+		message = "test config file {0} exists? YES".format(testConfigFile)
+		assert configFile_Exists == True
+	except IOError as errorMessage:
 		errorMessage = "checking existence of {0}, received {1}".format(testConfigFile, errorMessage)
 		logger.error(errorMessage)
-		assert configFile_Exists = False
+		assert configFile_Exists == False
 		
 	return True
 	
