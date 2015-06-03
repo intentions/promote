@@ -1,4 +1,3 @@
-#!/usr/bin/python
 """
 Promotes files as directed in the config file
 """
@@ -147,7 +146,7 @@ def verifyFile(source, destination):
 
 	return False
 
-def test_promote():
+def test_function():
 	"""
 	Testing funciton for nose
 	"""
@@ -159,16 +158,14 @@ def test_promote():
 	testConfigFile = "test.json"
 	message = "testing existence of test config file {0}".format(testConfigFile)
 	logger.info(message)
-	try:
-		os.path.isfile(testConfigFile)
-		message = "test config file {0} exists? YES".format(testConfigFile)
-		assert configFile_Exists == True
-	except IOError as errorMessage:
-		errorMessage = "checking existence of {0}, received {1}".format(testConfigFile, errorMessage)
-		logger.error(errorMessage)
-		assert configFile_Exists == False
+	testConfigExists = False
+	#try:
+	#	os.path.isfile(testConfigFile)
+#	except:
+#		testConfigExists = False
 		
-	return True
+	assert testConfigExists == True
+#	return True
 	
 
 	
