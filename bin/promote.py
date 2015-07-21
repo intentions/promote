@@ -85,8 +85,19 @@ def moveFile(src, dest, bak="bak"):
 	if the target file exists in that directory then
 	the target is coppied as .bak
 	"""
+	
 	message = "processing: {0} -> {1}".format(src, dest)
 	logger.info(message)
+
+	#compare the source and destination, if the files are the same do nothing
+	if os.path.exists(src) and os.path.exists(dest): 
+		message = "file {0} found, comparing to {1}".format(src, dest)
+		logger.info(message)
+		(fileCheck, fileSig) = verifyFile(src, dest)
+		if fileCheck:
+			message = "source file {0} matches destination file {1}".format(src, dest)
+			logger.info(message)
+			return True
 	
 	if os.path.exists(dest):
 		backupFileName = "{0}.{1}".format(dest, bak)
@@ -97,7 +108,7 @@ def moveFile(src, dest, bak="bak"):
 		except IOError as errorMessage:
 			logger.error(errorMessage)
 			return False
-
+	
 	if os.path.exists(src):
 		message = "copying {0} to {1})".format(src, dest)
 		try:
@@ -125,7 +136,7 @@ def moveFile(src, dest, bak="bak"):
 		logger.error(errorMessage)
 		return False
 	
-
+	return True
 	
 def checkGit(directory):
 	"""
@@ -158,13 +169,15 @@ def test_function():
 	testConfigFile = "test.json"
 	message = "testing existence of test config file {0}".format(testConfigFile)
 	logger.info(message)
-	testConfigExists = False
-	#try:
-	#	os.path.isfile(testConfigFile)
-#	except:
-#		testConfigExists = False
+	testConfigExists = True 
+	print "{0}".format(str(os.path.isfile))
+	
+	try:
+		os.path.isfile(testConfigFile)
+	except:
+		testConfigExists = False
 		
-	assert testConfigExists == True
+	assert testConfigExists == False
 #	return True
 	
 
