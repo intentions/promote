@@ -98,7 +98,8 @@ def moveFile(src, dest, bak="bak"):
 			message = "source file {0} matches destination file {1}".format(src, dest)
 			logger.info(message)
 			return True
-	
+		
+	#checks to see if the destination file exists, then creates a backup of it
 	if os.path.exists(dest):
 		backupFileName = "{0}.{1}".format(dest, bak)
 		message = "file {0} exists, creating backup: {1}".format(dest, backupFileName)
@@ -108,15 +109,17 @@ def moveFile(src, dest, bak="bak"):
 		except IOError as errorMessage:
 			logger.error(errorMessage)
 			return False
-	
+		
+	#attempts to copy the source file to the destination,  
 	if os.path.exists(src):
 		message = "copying {0} to {1})".format(src, dest)
 		try:
 			shutil.copy(src, dest)
 		except IOError as errorMessage:
 			logger.error(errorMessage)
+			shutil.move(backupFilenName, dest)
 			return False
-
+		
 	#verify that files are the same
 	(fileCheck, fileSig) = verifyFile(src, dest)
 	if fileCheck:
